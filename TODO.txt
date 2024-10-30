@@ -1,0 +1,2 @@
+add an ID to Customer that increments
+add a check if that customer is not found that a 404 error is returned

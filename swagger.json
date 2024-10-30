@@ -1,0 +1,74 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Customer API",
+      "description": "API for managing customers"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "schemes": [
+      "http"
+    ],
+    "paths": {
+      "/addCustomer": {
+        "post": {
+          "summary": "Add a new customer",
+          "description": "Creates a new customer in the system",
+          "consumes": ["application/json"],
+          "produces": ["application/json"],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "customer",
+              "description": "Customer to add",
+              "required": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "age": {
+                    "type": "string",
+                    "example": "23"
+                  }
+                },
+                "required": ["name", "age"]
+              }
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Customer created successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "123"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "johndoe@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+1234567890"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Invalid input"
+            }
+          }
+        }
+      }
+    }
+  }

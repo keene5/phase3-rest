@@ -1,7 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
- const routes = require('./routes/routes');
+ const routes = require('./routes/data-access');
+ const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
+ 
 
 //Get database URL from .env setting the systems environment variables
 const mongoString =process.env.DATABASE_URL;
@@ -27,7 +30,8 @@ database.once('connected', ()=>{console.log('Database Connected' +database.name)
 
 const app = express();
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', routes);
-app.listen(3000, () => {
-    console.log(`Server Started at ${3000}`);
+app.listen(4000, () => {
+    console.log(`Server Started at ${4000}`);
 });

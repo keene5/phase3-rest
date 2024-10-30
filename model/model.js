@@ -1,17 +1,28 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { v4: uuidv4 } = require("uuid");
 
-
-
-
-const dataSchema = new mongoose.Schema({
-    name: {
-        required: true,
-        type: String
+const dataSchema = new mongoose.Schema(
+  {
+    customerId: {
+      type: String,
+      unique: true,
+      default: uuidv4, // Automatically generate a unique ID
+      required: true,
     },
-    age: {
-        required: true,
-        type: Number
+    name: {
+      required: true,
+      type: String,
+    },
+    email: {
+      required: false,
+      type: String,
+    },
+    password: {
+      required: false,
+      type: String,
     }
-} , { collection: 'Customer' });
+  },
+  { collection: "Customer" }
+);
 
-module.exports = mongoose.model('Customer', dataSchema)
+module.exports = mongoose.model("Customer", dataSchema);
