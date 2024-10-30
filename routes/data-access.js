@@ -95,3 +95,43 @@ router.delete("/deleteCustomer/:id", async (req, res) => {
       });
   }
 });
+
+// Sample data for resetting
+const resetData = [
+  {
+    customerId: "1",
+    name: "Donald Duck",
+    email: "duck@example.com",
+    password: "password123"
+  },
+  {
+    customerId: "2",
+    name: "Bob WhatAbout",
+    email: "bob@example.com",
+    password: "password123"
+  },
+  {
+    customerId: "3",
+    name: "Charlie Brown",
+    email: "charlie@example.com",
+    password: "password123"
+  }
+];
+
+// Reset endpoint
+router.get("/resetCustomers", async (req, res) => {
+  try {
+    await Model.deleteMany({});
+    await Model.insertMany(resetData);
+
+    res.status(200).json({
+        message: "Customer collection has been reset.",
+        data: resetData
+      });
+  } catch (error) {
+    console.error("Error while resetting customers:", error);
+    res.status(500).json({ message: "An error occurred while resetting customers." });
+  }
+});
+
+module.exports = router;

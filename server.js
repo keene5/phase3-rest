@@ -4,6 +4,7 @@ require('dotenv').config();
  const routes = require('./routes/data-access');
  const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
+const path = require('path');
  
 
 //Get database URL from .env setting the systems environment variables
@@ -32,6 +33,7 @@ const app = express();
 app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', routes);
+app.use(express.static(path.join(__dirname, 'public')));
 app.listen(4000, () => {
     console.log(`Server Started at ${4000}`);
 });
