@@ -38,7 +38,6 @@ router.get("/getAll", checkAccessLevel(['admin', 'write', 'read']), async (req, 
   }
 });
 
-//Get by ID Method
 router.get("/getCustomer/:id", checkAccessLevel(['admin', 'write', 'read']), async (req, res) => {
   try {
     const data = await Model.findOne({ customerId: req.params.id });
@@ -100,7 +99,7 @@ router.delete("/deleteCustomer/:id", checkAccessLevel(['admin', 'write']), async
   }
 });
 
-// Sample data for resetting
+
 const resetData = [
   {
     customerId: "88c14e7e-3940-4d8b-a444-24f0b842b40d",
@@ -122,7 +121,7 @@ const resetData = [
   }
 ];
 
-// Reset endpoint
+
 router.get("/resetCustomers", checkAccessLevel(['admin']), async (req, res) => {
   try {
     await Model.deleteMany({});
@@ -137,7 +136,33 @@ router.get("/resetCustomers", checkAccessLevel(['admin']), async (req, res) => {
     res.status(500).json({ message: "An error occurred while resetting customers." });
   }
 });
+router.get('/customerFind', async (req, res) => {
+  const { query } = req.query; 
 
+  if (!query) {
+    return res.status(400).json({ message: 'Query parameter is required' });
+  }
 
+  let mongoQuery;
+  
+  try {
+    mongoQuery = JSON.parse(query);
+  } catch (error) {
+    return res.status(400).json({ message: 'Invalid query format' });
+  }
+
+  try {
+    const customers = await Model.find(mongoQuery);
+
+    if (customers.length === 0) {
+      return res.status(404).json({ message: 'No records match your query' });
+    }
+    res.status(200).json(customers);
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ message: 'An error occurred while executing the query.' });
+  }
+});
 
 module.exports = router;
+
