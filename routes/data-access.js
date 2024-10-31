@@ -99,19 +99,19 @@ router.delete("/deleteCustomer/:id", async (req, res) => {
 // Sample data for resetting
 const resetData = [
   {
-    customerId: "1",
+    customerId: "88c14e7e-3940-4d8b-a444-24f0b842b40d",
     name: "Donald Duck",
     email: "duck@example.com",
     password: "password123"
   },
   {
-    customerId: "2",
+    customerId: "591d5a16-8659-4ad3-8c49-73d4988576b9",
     name: "Bob WhatAbout",
     email: "bob@example.com",
     password: "password123"
   },
   {
-    customerId: "3",
+    customerId: "b47655c3-0d58-4946-a200-4baaa1cc1e71",
     name: "Charlie Brown",
     email: "charlie@example.com",
     password: "password123"

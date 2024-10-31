@@ -22,7 +22,7 @@ const dataSchema = new mongoose.Schema(
       type: String,
     }
   },
-  { collection: "Customer" }
+  { collection: process.env.COLLECTION}
 );
 
 module.exports = mongoose.model("Customer", dataSchema);
