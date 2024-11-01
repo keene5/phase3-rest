@@ -4,15 +4,14 @@ const validator = require("validator");
 const userRouter = express.Router();
 const User = require("../model/user.js");
 const { v4: uuidv4 } = require("uuid");
-const { encryptApiKey, decryptApiKey} = require("../security/encryption.js");
+const { encryptApiKey, decryptApiKey } = require("../security/encryption.js");
 
 const { models } = require("mongoose");
-const checkAccessLevel = require('../middleware/authenticate'); 
+const checkAccessLevel = require('../middleware/authenticate');
 
 module.exports = userRouter;
 
-
-userRouter.post('/createUser', async (req, res) => {
+userRouter.post('/createUser', async (req, res, next) => {
   const { name, dob, userId, accessLevel } = req.body;
 
   // Validate the incoming request
@@ -24,7 +23,7 @@ userRouter.post('/createUser', async (req, res) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ userId });
     if (existingUser) {
-      return res.status(200).json({ apiKey: decryptApiKey(existingUser.apiKey), message: 'User ID already exists'  });
+      return res.status(200).json({ apiKey: decryptApiKey(existingUser.apiKey), message: 'User ID already exists' });
     }
 
     // Generate a new API key
@@ -46,12 +45,12 @@ userRouter.post('/createUser', async (req, res) => {
     // Return the API key to the user
     res.status(201).json({ apiKey, message: 'New user created' });
   } catch (error) {
-    console.error('Error creating API key:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    console.error('Error during user creation:', error);
+    next(error); // Pass errors to the error handling middleware
   }
 });
 
-userRouter.delete("/deleteAllUsers", checkAccessLevel(['admin']),async (req, res) => {
+userRouter.delete("/deleteAllUsers", checkAccessLevel(['admin']), async (req, res, next) => {
   try {
     // Delete all documents from the User collection
     const result = await User.deleteMany({});
@@ -59,10 +58,20 @@ userRouter.delete("/deleteAllUsers", checkAccessLevel(['admin']),async (req, res
     // Send a response with the count of deleted documents
     res.status(200).json({ message: "All users deleted successfully", deletedCount: result.deletedCount });
   } catch (error) {
-    console.error("Error deleting users:", error);
-    res.status(500).json({ message: "An error occurred while deleting users." });
+    console.error("Error during deletion of all users:", error);
+    next(error); // Pass errors to the error handling middleware
   }
 });
 
+// Error handling middleware
+userRouter.use((err, req, res, next) => {
+  console.error('Error:', err);
+
+  if (err.name === 'CastError' || err.name === 'ValidationError') {
+    return res.status(400).json({ message: 'Invalid data type provided.' });
+  }
+
+  res.status(500).json({ message: 'Internal server error.' });
+});
 
 module.exports = userRouter;
