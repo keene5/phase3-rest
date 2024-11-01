@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 // Define a secret key (use a secure method in production)
-const secret = 'mySuperSecretKey';
+const secret = process.env.BASEKEY;
 const algorithm = 'aes-256-cbc';
 const ivLength = 16; // 16 bytes for AES
 

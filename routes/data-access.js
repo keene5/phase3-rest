@@ -17,6 +17,8 @@ router.post("/addCustomer", checkAccessLevel(['admin', 'write']), async (req, re
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
+    dateOfBirth: req.body.dateOfBirth,
+    region: req.body.region,
   });
 
   try {
@@ -104,6 +106,9 @@ const resetData = [
   {
     customerId: "88c14e7e-3940-4d8b-a444-24f0b842b40d",
     name: "Donald Duck",
+    dateOfBirth: "2020-01-01",
+    region: 12,
+
     email: "duck@example.com",
     password: "password123"
   },

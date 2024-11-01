@@ -13,6 +13,14 @@ const dataSchema = new mongoose.Schema(
       required: true,
       type: String,
     },
+    dateOfBirth: {
+      required: true,
+      type: Date,
+    },
+    region: {
+      required: false,
+      type: Number,
+    },
     email: {
       required: false,
       type: String,
